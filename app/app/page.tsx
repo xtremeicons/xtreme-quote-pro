@@ -149,7 +149,8 @@ export default function Home() {
           }}
         >
           {menuItems.map((item) => (
-            <button
+<a
+  href={item.title === text.newQuote ? "/nueva-cotizacion" : "#"}
               key={item.title}
               style={{
                 background: "rgba(20, 20, 20, 0.92)",
@@ -157,6 +158,8 @@ export default function Home() {
                 borderRadius: "18px",
                 padding: "26px",
                 color: "#fff",
+                textDecoration: "none",
+display: "block",
                 textAlign: "left",
                 cursor: "pointer",
                 minHeight: "145px",
@@ -182,7 +185,7 @@ export default function Home() {
               >
                 {item.title}
               </span>
-            </button>
+            </a>
           ))}
         </section>
       </div>
