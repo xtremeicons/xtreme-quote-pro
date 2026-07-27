@@ -2,7 +2,175 @@
 
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 
+type Language = "es" | "en";
 type NumericValue = number | "";
+
+const translations = {
+  es: {
+    back: "← Regresar al inicio",
+    newQuote: "Nueva cotización",
+    quote: "Cotización",
+    clientInfo: "Información del cliente",
+    clientName: "Nombre del cliente",
+    company: "Empresa",
+    phone: "Teléfono",
+    email: "Correo",
+    productMeasurements: "Producto y medidas",
+    category: "Categoría",
+    selectCategory: "Selecciona una categoría",
+    material: "Material",
+    selectMaterial: "Selecciona un material",
+    selectCategoryFirst: "Selecciona primero una categoría",
+    unit: "Unidad de medida",
+    feet: "Pies",
+    inches: "Pulgadas",
+    width: "Ancho",
+    height: "Alto",
+    quantity: "Cantidad",
+    areaPerPiece: "Área por pieza",
+    totalArea: "Área total",
+    waste: "Desperdicio",
+    totalPerimeter: "Perímetro total",
+    notes: "Descripción o notas",
+    costsExtras: "Costos y extras",
+    labor: "Mano de obra ($)",
+    laminate: "Laminado",
+    chargedSqFt: "Se cobra por pie cuadrado",
+    priceSqFt: "Precio por ft²",
+    grommets: "Ojillos",
+    qtyUnitPrice: "Cantidad y precio por unidad",
+    unitPrice: "Precio c/u",
+    hem: "Dobladillo",
+    chargedLinearFt: "Se cobra por pie lineal",
+    linearFeet: "Pies lineales",
+    pricePerFoot: "Precio por pie",
+    polePockets: "Bolsas para tubo",
+    graphicDesign: "Diseño gráfico",
+    editableFixedFee: "Cargo fijo editable",
+    designFee: "Cargo de diseño",
+    installation: "Instalación",
+    installationFee: "Cargo de instalación",
+    shipping: "Envío",
+    shippingFee: "Cargo de envío",
+    summary: "Resumen",
+    markup: "Recargo (%)",
+    tax: "Impuesto (%)",
+    materialNoWaste: "Material sin desperdicio",
+    wasteCost: "Costo del desperdicio",
+    materialTotal: "Material total",
+    laborSummary: "Mano de obra",
+    productionExtras: "Extras de producción",
+    productionCost: "Costo de producción",
+    markupSummary: "Recargo",
+    productPrice: "Precio del producto",
+    serviceExtras: "Diseño / instalación / envío",
+    subtotal: "Subtotal",
+    taxes: "Impuestos",
+    total: "TOTAL",
+    profit: "Utilidad",
+    profitOnSale: "Utilidad sobre venta",
+    calculate: "Calcular cotización",
+    save: "Guardar",
+    printPdf: "Imprimir / PDF",
+    calculated: "Cotización calculada correctamente",
+    saved: "guardada. La próxima será",
+    client: "CLIENTE",
+    jobSummary: "RESUMEN DEL TRABAJO",
+    concept: "Concepto",
+    detail: "Detalle",
+    amount: "Importe",
+    product: "Producto",
+    units: "unidad(es)",
+    designCharge: "Cargo de diseño",
+    installationCharge: "Cargo de instalación",
+    shippingCharge: "Cargo de envío",
+    printNotes: "NOTAS",
+    disclaimer: "Esta cotización está sujeta a confirmación de medidas, materiales y disponibilidad. Gracias por elegir Xtreme Icons Agency.",
+    professionalServices: "Professional Printing & Creative Services",
+  },
+  en: {
+    back: "← Back to home",
+    newQuote: "New quote",
+    quote: "Quote",
+    clientInfo: "Client information",
+    clientName: "Client name",
+    company: "Company",
+    phone: "Phone",
+    email: "Email",
+    productMeasurements: "Product and measurements",
+    category: "Category",
+    selectCategory: "Select a category",
+    material: "Material",
+    selectMaterial: "Select a material",
+    selectCategoryFirst: "Select a category first",
+    unit: "Unit of measurement",
+    feet: "Feet",
+    inches: "Inches",
+    width: "Width",
+    height: "Height",
+    quantity: "Quantity",
+    areaPerPiece: "Area per piece",
+    totalArea: "Total area",
+    waste: "Waste",
+    totalPerimeter: "Total perimeter",
+    notes: "Description or notes",
+    costsExtras: "Costs and extras",
+    labor: "Labor ($)",
+    laminate: "Lamination",
+    chargedSqFt: "Charged per square foot",
+    priceSqFt: "Price per ft²",
+    grommets: "Grommets",
+    qtyUnitPrice: "Quantity and price per unit",
+    unitPrice: "Unit price",
+    hem: "Hem",
+    chargedLinearFt: "Charged per linear foot",
+    linearFeet: "Linear feet",
+    pricePerFoot: "Price per foot",
+    polePockets: "Pole pockets",
+    graphicDesign: "Graphic design",
+    editableFixedFee: "Editable fixed fee",
+    designFee: "Design fee",
+    installation: "Installation",
+    installationFee: "Installation fee",
+    shipping: "Shipping",
+    shippingFee: "Shipping fee",
+    summary: "Summary",
+    markup: "Markup (%)",
+    tax: "Tax (%)",
+    materialNoWaste: "Material before waste",
+    wasteCost: "Waste cost",
+    materialTotal: "Total material",
+    laborSummary: "Labor",
+    productionExtras: "Production extras",
+    productionCost: "Production cost",
+    markupSummary: "Markup",
+    productPrice: "Product price",
+    serviceExtras: "Design / installation / shipping",
+    subtotal: "Subtotal",
+    taxes: "Taxes",
+    total: "TOTAL",
+    profit: "Profit",
+    profitOnSale: "Profit on sale",
+    calculate: "Calculate quote",
+    save: "Save",
+    printPdf: "Print / PDF",
+    calculated: "Quote calculated successfully",
+    saved: "saved. The next one will be",
+    client: "CLIENT",
+    jobSummary: "JOB SUMMARY",
+    concept: "Item",
+    detail: "Detail",
+    amount: "Amount",
+    product: "Product",
+    units: "unit(s)",
+    designCharge: "Design fee",
+    installationCharge: "Installation fee",
+    shippingCharge: "Shipping fee",
+    printNotes: "NOTES",
+    disclaimer: "This quote is subject to confirmation of measurements, materials, and availability. Thank you for choosing Xtreme Icons Agency.",
+    professionalServices: "Professional Printing & Creative Services",
+  },
+} as const;
 type CategoryKey =
   | "banner"
   | "coroplast"
@@ -22,7 +190,8 @@ type MaterialOption = {
   waste: number;
 };
 
-const categoryLabels: Record<CategoryKey, string> = {
+const categoryLabels: Record<Language, Record<CategoryKey, string>> = {
+  es: {
   banner: "Banner",
   coroplast: "Coroplast",
   vinyl: "Vinilo adhesivo",
@@ -34,6 +203,20 @@ const categoryLabels: Record<CategoryKey, string> = {
   dtf: "DTF",
   "uv-dtf": "UV DTF",
   "business-cards": "Tarjetas de presentación",
+  },
+  en: {
+    banner: "Banner",
+    coroplast: "Coroplast",
+    vinyl: "Adhesive vinyl",
+    "window-perf": "Window Perf",
+    magnets: "Magnets",
+    canvas: "Canvas",
+    pvc: "PVC",
+    acrylic: "Acrylic",
+    dtf: "DTF",
+    "uv-dtf": "UV DTF",
+    "business-cards": "Business cards",
+  },
 };
 
 const materials: Record<CategoryKey, MaterialOption[]> = {
@@ -129,6 +312,8 @@ const updateNumber = (
 ) => setter(raw === "" ? "" : Number(raw));
 
 export default function NuevaCotizacion() {
+  const [language, setLanguage] = useState<Language>("es");
+  const t = translations[language];
   const [nombreCliente, setNombreCliente] = useState("");
   const [empresa, setEmpresa] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -171,17 +356,25 @@ export default function NuevaCotizacion() {
 
 
   useEffect(() => {
+    const savedLanguage = window.localStorage.getItem("xqs-language");
+    if (savedLanguage === "es" || savedLanguage === "en") setLanguage(savedLanguage);
+
     const saved = window.localStorage.getItem("xqs-next-quote-number");
     const nextNumber = saved ? Math.max(1, Number(saved) || 1) : 1;
     setNumeroSecuencial(nextNumber);
     setNumeroCotizacion(`XQS-${String(nextNumber).padStart(4, "0")}`);
   }, []);
 
+  const cambiarIdioma = (nextLanguage: Language) => {
+    setLanguage(nextLanguage);
+    window.localStorage.setItem("xqs-language", nextLanguage);
+  };
+
   const guardarCotizacion = () => {
     if (!calculado) return;
     const nextNumber = numeroSecuencial + 1;
     window.localStorage.setItem("xqs-next-quote-number", String(nextNumber));
-    window.alert(`Cotización ${numeroCotizacion} guardada. La próxima será XQS-${String(nextNumber).padStart(4, "0")}.`);
+    window.alert(`${t.quote} ${numeroCotizacion} ${t.saved} XQS-${String(nextNumber).padStart(4, "0")}.`);
   };
 
   const selectedMaterial = useMemo(() => {
@@ -334,7 +527,7 @@ export default function NuevaCotizacion() {
             fontWeight: 800,
           }}
         >
-          ← Regresar al inicio
+          {t.back}
         </a>
 
         <header
@@ -359,9 +552,52 @@ export default function NuevaCotizacion() {
               XTREME QUOTE PRO
             </p>
             <h1 style={{ margin: 0, fontSize: "clamp(28px, 5vw, 44px)" }}>
-              Nueva cotización
+              {t.newQuote}
             </h1>
           </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            <div
+              style={{
+                display: "flex",
+                padding: "4px",
+                background: "#111418",
+                border: "1px solid #2a3037",
+                borderRadius: "12px",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => cambiarIdioma("es")}
+                aria-pressed={language === "es"}
+                style={{
+                  padding: "8px 11px",
+                  border: 0,
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: 800,
+                  background: language === "es" ? "#d00000" : "transparent",
+                  color: "white",
+                }}
+              >
+                🇪🇸 Español
+              </button>
+              <button
+                type="button"
+                onClick={() => cambiarIdioma("en")}
+                aria-pressed={language === "en"}
+                style={{
+                  padding: "8px 11px",
+                  border: 0,
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: 800,
+                  background: language === "en" ? "#d00000" : "transparent",
+                  color: "white",
+                }}
+              >
+                🇺🇸 English
+              </button>
+            </div>
           <div
             style={{
               background: "#111418",
@@ -370,10 +606,11 @@ export default function NuevaCotizacion() {
               padding: "12px 16px",
             }}
           >
-            <small style={{ color: "#8b949e" }}>Cotización</small>
+            <small style={{ color: "#8b949e" }}>{t.quote}</small>
             <div style={{ fontWeight: 800, marginTop: "3px" }}>
               {numeroCotizacion}
             </div>
+          </div>
           </div>
         </header>
 
@@ -387,23 +624,23 @@ export default function NuevaCotizacion() {
         >
           <div style={{ display: "grid", gap: "20px" }}>
             <section style={cardStyle}>
-              <h2 style={{ marginTop: 0 }}>Información del cliente</h2>
+              <h2 style={{ marginTop: 0 }}>{t.clientInfo}</h2>
               <div style={{ display: "grid", gap: "13px" }}>
                 <div>
-                  <label style={labelStyle}>Nombre del cliente</label>
+                  <label style={labelStyle}>{t.clientName}</label>
                   <input value={nombreCliente} onChange={(e) => setNombreCliente(e.target.value)} style={inputStyle} />
                 </div>
                 <div>
-                  <label style={labelStyle}>Empresa</label>
+                  <label style={labelStyle}>{t.company}</label>
                   <input value={empresa} onChange={(e) => setEmpresa(e.target.value)} style={inputStyle} />
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                   <div>
-                    <label style={labelStyle}>Teléfono</label>
+                    <label style={labelStyle}>{t.phone}</label>
                     <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} style={inputStyle} />
                   </div>
                   <div>
-                    <label style={labelStyle}>Correo</label>
+                    <label style={labelStyle}>{t.email}</label>
                     <input type="email" value={correo} onChange={(e) => setCorreo(e.target.value)} style={inputStyle} />
                   </div>
                 </div>
@@ -411,55 +648,55 @@ export default function NuevaCotizacion() {
             </section>
 
             <section style={cardStyle}>
-              <h2 style={{ marginTop: 0 }}>Producto y medidas</h2>
+              <h2 style={{ marginTop: 0 }}>{t.productMeasurements}</h2>
               <div style={{ display: "grid", gap: "13px" }}>
                 <div>
-                  <label style={labelStyle}>Categoría</label>
+                  <label style={labelStyle}>{t.category}</label>
                   <select value={categoria} onChange={(e) => handleCategory(e.target.value as CategoryKey | "")} style={inputStyle}>
-                    <option value="">Selecciona una categoría</option>
-                    {(Object.keys(categoryLabels) as CategoryKey[]).map((key) => (
-                      <option key={key} value={key}>{categoryLabels[key]}</option>
+                    <option value="">{t.selectCategory}</option>
+                    {(Object.keys(categoryLabels[language]) as CategoryKey[]).map((key) => (
+                      <option key={key} value={key}>{categoryLabels[language][key]}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label style={labelStyle}>Material</label>
+                  <label style={labelStyle}>{t.material}</label>
                   <select value={material} onChange={(e) => handleMaterial(e.target.value)} disabled={!categoria} style={{ ...inputStyle, opacity: categoria ? 1 : 0.55 }}>
-                    <option value="">{categoria ? "Selecciona un material" : "Selecciona primero una categoría"}</option>
+                    <option value="">{categoria ? t.selectMaterial : t.selectCategoryFirst}</option>
                     {categoria && materials[categoria].map((item) => (
                       <option key={item.name} value={item.name}>{item.name}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label style={labelStyle}>Unidad de medida</label>
+                  <label style={labelStyle}>{t.unit}</label>
                   <select value={unidad} onChange={(e) => setUnidad(e.target.value)} style={inputStyle}>
-                    <option value="pies">Pies</option>
-                    <option value="pulgadas">Pulgadas</option>
+                    <option value="pies">{t.feet}</option>
+                    <option value="pulgadas">{t.inches}</option>
                   </select>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px" }}>
                   <div>
-                    <label style={labelStyle}>Ancho</label>
+                    <label style={labelStyle}>{t.width}</label>
                     <input type="number" min="0" step="0.01" value={ancho} onFocus={(e) => e.currentTarget.select()} onChange={(e) => updateNumber(e.target.value, setAncho)} style={inputStyle} />
                   </div>
                   <div>
-                    <label style={labelStyle}>Alto</label>
+                    <label style={labelStyle}>{t.height}</label>
                     <input type="number" min="0" step="0.01" value={alto} onFocus={(e) => e.currentTarget.select()} onChange={(e) => updateNumber(e.target.value, setAlto)} style={inputStyle} />
                   </div>
                   <div>
-                    <label style={labelStyle}>Cantidad</label>
+                    <label style={labelStyle}>{t.quantity}</label>
                     <input type="number" min="1" value={cantidad} onFocus={(e) => e.currentTarget.select()} onChange={(e) => updateNumber(e.target.value, setCantidad)} style={inputStyle} />
                   </div>
                 </div>
                 <div style={{ background: "#0b0e12", border: "1px solid #292f36", borderRadius: "12px", padding: "14px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                  <span>Área por pieza: <strong>{areaPieza.toFixed(2)} ft²</strong></span>
-                  <span>Área total: <strong>{areaTotal.toFixed(2)} ft²</strong></span>
-                  <span>Desperdicio: <strong>{areaDesperdicio.toFixed(2)} ft²</strong></span>
-                  <span>Perímetro total: <strong>{perimetroTotal.toFixed(2)} ft</strong></span>
+                  <span>{t.areaPerPiece}: <strong>{areaPieza.toFixed(2)} ft²</strong></span>
+                  <span>{t.totalArea}: <strong>{areaTotal.toFixed(2)} ft²</strong></span>
+                  <span>{t.waste}: <strong>{areaDesperdicio.toFixed(2)} ft²</strong></span>
+                  <span>{t.totalPerimeter}: <strong>{perimetroTotal.toFixed(2)} ft</strong></span>
                 </div>
                 <div>
-                  <label style={labelStyle}>Descripción o notas</label>
+                  <label style={labelStyle}>{t.notes}</label>
                   <textarea value={notas} onChange={(e) => setNotas(e.target.value)} rows={4} style={{ ...inputStyle, resize: "vertical" }} />
                 </div>
               </div>
@@ -467,71 +704,71 @@ export default function NuevaCotizacion() {
           </div>
 
           <section style={cardStyle}>
-            <h2 style={{ marginTop: 0 }}>Costos y extras</h2>
+            <h2 style={{ marginTop: 0 }}>{t.costsExtras}</h2>
             <div style={{ display: "grid", gap: "13px" }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                 <div>
-                  <label style={labelStyle}>Desperdicio (%)</label>
+                  <label style={labelStyle}>{t.waste} (%)</label>
                   <input type="number" min="0" step="0.01" value={desperdicio} onFocus={(e) => e.currentTarget.select()} onChange={(e) => updateNumber(e.target.value, setDesperdicio)} style={inputStyle} />
                 </div>
                 <div>
-                  <label style={labelStyle}>Mano de obra ($)</label>
+                  <label style={labelStyle}>{t.labor}</label>
                   <input type="number" min="0" step="0.01" value={manoObra} onFocus={(e) => e.currentTarget.select()} onChange={(e) => updateNumber(e.target.value, setManoObra)} style={inputStyle} />
                 </div>
               </div>
 
-              {checkboxRow(usarLaminado, setUsarLaminado, "Laminado", "Se cobra por pie cuadrado", <div><label style={labelStyle}>Precio por ft²</label><input type="number" min="0" step="0.01" value={laminadoPie} onChange={(e) => updateNumber(e.target.value, setLaminadoPie)} style={inputStyle} /></div>)}
-              {checkboxRow(usarOjillos, setUsarOjillos, "Ojillos", "Cantidad y precio por unidad", <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}><div><label style={labelStyle}>Cantidad</label><input type="number" min="0" value={cantidadOjillos} onChange={(e) => updateNumber(e.target.value, setCantidadOjillos)} style={inputStyle} /></div><div><label style={labelStyle}>Precio c/u</label><input type="number" min="0" step="0.01" value={precioOjillo} onChange={(e) => updateNumber(e.target.value, setPrecioOjillo)} style={inputStyle} /></div></div>)}
-              {checkboxRow(usarDobladillo, setUsarDobladillo, "Dobladillo", "Se cobra por pie lineal", <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}><div><label style={labelStyle}>Pies lineales</label><input type="number" min="0" step="0.01" value={piesDobladillo} placeholder={perimetroTotal.toFixed(2)} onChange={(e) => updateNumber(e.target.value, setPiesDobladillo)} style={inputStyle} /></div><div><label style={labelStyle}>Precio por pie</label><input type="number" min="0" step="0.01" value={precioDobladillo} onChange={(e) => updateNumber(e.target.value, setPrecioDobladillo)} style={inputStyle} /></div></div>)}
-              {checkboxRow(usarBolsas, setUsarBolsas, "Bolsas para tubo", "Se cobra por pie lineal", <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}><div><label style={labelStyle}>Pies lineales</label><input type="number" min="0" step="0.01" value={piesBolsas} onChange={(e) => updateNumber(e.target.value, setPiesBolsas)} style={inputStyle} /></div><div><label style={labelStyle}>Precio por pie</label><input type="number" min="0" step="0.01" value={precioBolsas} onChange={(e) => updateNumber(e.target.value, setPrecioBolsas)} style={inputStyle} /></div></div>)}
-              {checkboxRow(usarDiseno, setUsarDiseno, "Diseño gráfico", "Cargo fijo editable", <div><label style={labelStyle}>Cargo de diseño</label><input type="number" min="0" step="0.01" value={diseno} onChange={(e) => updateNumber(e.target.value, setDiseno)} style={inputStyle} /></div>)}
-              {checkboxRow(usarInstalacion, setUsarInstalacion, "Instalación", "Cargo fijo editable", <div><label style={labelStyle}>Cargo de instalación</label><input type="number" min="0" step="0.01" value={instalacion} onChange={(e) => updateNumber(e.target.value, setInstalacion)} style={inputStyle} /></div>)}
-              {checkboxRow(usarEnvio, setUsarEnvio, "Envío", "Cargo fijo editable", <div><label style={labelStyle}>Cargo de envío</label><input type="number" min="0" step="0.01" value={envio} onChange={(e) => updateNumber(e.target.value, setEnvio)} style={inputStyle} /></div>)}
+              {checkboxRow(usarLaminado, setUsarLaminado, t.laminate, t.chargedSqFt, <div><label style={labelStyle}>{t.priceSqFt}</label><input type="number" min="0" step="0.01" value={laminadoPie} onChange={(e) => updateNumber(e.target.value, setLaminadoPie)} style={inputStyle} /></div>)}
+              {checkboxRow(usarOjillos, setUsarOjillos, t.grommets, t.qtyUnitPrice, <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}><div><label style={labelStyle}>{t.quantity}</label><input type="number" min="0" value={cantidadOjillos} onChange={(e) => updateNumber(e.target.value, setCantidadOjillos)} style={inputStyle} /></div><div><label style={labelStyle}>{t.unitPrice}</label><input type="number" min="0" step="0.01" value={precioOjillo} onChange={(e) => updateNumber(e.target.value, setPrecioOjillo)} style={inputStyle} /></div></div>)}
+              {checkboxRow(usarDobladillo, setUsarDobladillo, t.hem, t.chargedLinearFt, <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}><div><label style={labelStyle}>{t.linearFeet}</label><input type="number" min="0" step="0.01" value={piesDobladillo} placeholder={perimetroTotal.toFixed(2)} onChange={(e) => updateNumber(e.target.value, setPiesDobladillo)} style={inputStyle} /></div><div><label style={labelStyle}>{t.pricePerFoot}</label><input type="number" min="0" step="0.01" value={precioDobladillo} onChange={(e) => updateNumber(e.target.value, setPrecioDobladillo)} style={inputStyle} /></div></div>)}
+              {checkboxRow(usarBolsas, setUsarBolsas, t.polePockets, t.chargedLinearFt, <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}><div><label style={labelStyle}>{t.linearFeet}</label><input type="number" min="0" step="0.01" value={piesBolsas} onChange={(e) => updateNumber(e.target.value, setPiesBolsas)} style={inputStyle} /></div><div><label style={labelStyle}>{t.pricePerFoot}</label><input type="number" min="0" step="0.01" value={precioBolsas} onChange={(e) => updateNumber(e.target.value, setPrecioBolsas)} style={inputStyle} /></div></div>)}
+              {checkboxRow(usarDiseno, setUsarDiseno, t.graphicDesign, t.editableFixedFee, <div><label style={labelStyle}>{t.designFee}</label><input type="number" min="0" step="0.01" value={diseno} onChange={(e) => updateNumber(e.target.value, setDiseno)} style={inputStyle} /></div>)}
+              {checkboxRow(usarInstalacion, setUsarInstalacion, t.installation, t.editableFixedFee, <div><label style={labelStyle}>{t.installationFee}</label><input type="number" min="0" step="0.01" value={instalacion} onChange={(e) => updateNumber(e.target.value, setInstalacion)} style={inputStyle} /></div>)}
+              {checkboxRow(usarEnvio, setUsarEnvio, t.shipping, t.editableFixedFee, <div><label style={labelStyle}>{t.shippingFee}</label><input type="number" min="0" step="0.01" value={envio} onChange={(e) => updateNumber(e.target.value, setEnvio)} style={inputStyle} /></div>)}
             </div>
           </section>
 
           <section style={{ ...cardStyle, position: "sticky", top: "18px" }}>
-            <h2 style={{ marginTop: 0 }}>Resumen</h2>
+            <h2 style={{ marginTop: 0 }}>{t.summary}</h2>
             <div style={{ display: "grid", gap: "12px" }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                 <div>
-                  <label style={labelStyle}>Recargo (%)</label>
+                  <label style={labelStyle}>{t.markup}</label>
                   <input type="number" min="0" step="0.01" value={recargo} onFocus={(e) => e.currentTarget.select()} onChange={(e) => updateNumber(e.target.value, setRecargo)} style={inputStyle} />
                 </div>
                 <div>
-                  <label style={labelStyle}>Impuesto (%)</label>
+                  <label style={labelStyle}>{t.tax}</label>
                   <input type="number" min="0" step="0.01" value={impuesto} onFocus={(e) => e.currentTarget.select()} onChange={(e) => updateNumber(e.target.value, setImpuesto)} style={inputStyle} />
                 </div>
               </div>
 
               <div style={{ background: "#0b0e12", border: "1px solid #292f36", borderRadius: "12px", padding: "16px", display: "grid", gap: "10px" }}>
-                <SummaryRow label="Material sin desperdicio" value={money(costoMaterialBase)} />
-                <SummaryRow label="Costo del desperdicio" value={money(costoDesperdicio)} />
-                <SummaryRow label="Material total" value={money(costoMaterial)} />
-                <SummaryRow label="Mano de obra" value={money(costoManoObra)} />
-                <SummaryRow label="Extras de producción" value={money(extrasProduccion)} />
-                <SummaryRow label="Costo de producción" value={money(costoProduccion)} strong />
-                <SummaryRow label="Recargo" value={money(montoRecargo)} />
-                <SummaryRow label="Precio del producto" value={money(precioProducto)} strong />
-                <SummaryRow label="Diseño / instalación / envío" value={money(costoDiseno + costoInstalacion + costoEnvio)} />
-                <SummaryRow label="Subtotal" value={money(subtotal)} />
-                <SummaryRow label="Impuestos" value={money(impuestos)} />
+                <SummaryRow label={t.materialNoWaste} value={money(costoMaterialBase)} />
+                <SummaryRow label={t.wasteCost} value={money(costoDesperdicio)} />
+                <SummaryRow label={t.materialTotal} value={money(costoMaterial)} />
+                <SummaryRow label={t.laborSummary} value={money(costoManoObra)} />
+                <SummaryRow label={t.productionExtras} value={money(extrasProduccion)} />
+                <SummaryRow label={t.productionCost} value={money(costoProduccion)} strong />
+                <SummaryRow label={t.markupSummary} value={money(montoRecargo)} />
+                <SummaryRow label={t.productPrice} value={money(precioProducto)} strong />
+                <SummaryRow label={t.serviceExtras} value={money(costoDiseno + costoInstalacion + costoEnvio)} />
+                <SummaryRow label={t.subtotal} value={money(subtotal)} />
+                <SummaryRow label={t.taxes} value={money(impuestos)} />
                 <div style={{ borderTop: "1px solid #30363d", paddingTop: "14px", marginTop: "4px" }}>
-                  <div style={{ color: "#8b949e", fontSize: "13px" }}>TOTAL</div>
+                  <div style={{ color: "#8b949e", fontSize: "13px" }}>{t.total}</div>
                   <div style={{ color: "#ff3838", fontSize: "34px", fontWeight: 900, marginTop: "4px" }}>{money(total)}</div>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "5px" }}>
-                  <div style={{ background: "#14181d", borderRadius: "10px", padding: "11px" }}><small style={{ color: "#8b949e" }}>Utilidad</small><div style={{ fontWeight: 800, marginTop: "4px" }}>{money(utilidadDolares)}</div></div>
-                  <div style={{ background: "#14181d", borderRadius: "10px", padding: "11px" }}><small style={{ color: "#8b949e" }}>Utilidad sobre venta</small><div style={{ fontWeight: 800, marginTop: "4px" }}>{utilidadPorcentaje.toFixed(1)}%</div></div>
+                  <div style={{ background: "#14181d", borderRadius: "10px", padding: "11px" }}><small style={{ color: "#8b949e" }}>{t.profit}</small><div style={{ fontWeight: 800, marginTop: "4px" }}>{money(utilidadDolares)}</div></div>
+                  <div style={{ background: "#14181d", borderRadius: "10px", padding: "11px" }}><small style={{ color: "#8b949e" }}>{t.profitOnSale}</small><div style={{ fontWeight: 800, marginTop: "4px" }}>{utilidadPorcentaje.toFixed(1)}%</div></div>
                 </div>
               </div>
 
-              <button type="button" onClick={() => setCalculado(true)} style={{ width: "100%", padding: "15px", background: "#d00000", color: "white", border: 0, borderRadius: "10px", fontSize: "17px", fontWeight: 900, cursor: "pointer" }}>Calcular cotización</button>
+              <button type="button" onClick={() => setCalculado(true)} style={{ width: "100%", padding: "15px", background: "#d00000", color: "white", border: 0, borderRadius: "10px", fontSize: "17px", fontWeight: 900, cursor: "pointer" }}>{t.calculate}</button>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                <button type="button" disabled={!calculado} onClick={guardarCotizacion} style={{ padding: "12px", background: calculado ? "#24292f" : "#171a1f", color: calculado ? "white" : "#666", border: "1px solid #30363d", borderRadius: "9px", cursor: calculado ? "pointer" : "not-allowed", fontWeight: 700 }}>Guardar</button>
-                <button type="button" disabled={!calculado} onClick={() => window.print()} style={{ padding: "12px", background: calculado ? "#24292f" : "#171a1f", color: calculado ? "white" : "#666", border: "1px solid #30363d", borderRadius: "9px", cursor: calculado ? "pointer" : "not-allowed", fontWeight: 700 }}>Imprimir / PDF</button>
+                <button type="button" disabled={!calculado} onClick={guardarCotizacion} style={{ padding: "12px", background: calculado ? "#24292f" : "#171a1f", color: calculado ? "white" : "#666", border: "1px solid #30363d", borderRadius: "9px", cursor: calculado ? "pointer" : "not-allowed", fontWeight: 700 }}>{t.save}</button>
+                <button type="button" disabled={!calculado} onClick={() => window.print()} style={{ padding: "12px", background: calculado ? "#24292f" : "#171a1f", color: calculado ? "white" : "#666", border: "1px solid #30363d", borderRadius: "9px", cursor: calculado ? "pointer" : "not-allowed", fontWeight: 700 }}>{t.printPdf}</button>
               </div>
-              {calculado && <div style={{ background: "#102117", color: "#86efac", border: "1px solid #1f5131", borderRadius: "10px", padding: "11px", textAlign: "center", fontWeight: 700 }}>Cotización calculada correctamente</div>}
+              {calculado && <div style={{ background: "#102117", color: "#86efac", border: "1px solid #1f5131", borderRadius: "10px", padding: "11px", textAlign: "center", fontWeight: 700 }}>{t.calculated}</div>}
             </div>
           </section>
         </div>
@@ -542,54 +779,54 @@ export default function NuevaCotizacion() {
       <div className="print-section" style={{ display: "flex", justifyContent: "space-between", borderBottom: "3px solid #b00000", paddingBottom: "8px", marginBottom: "8px" }}>
         <div>
           <div style={{ fontSize: "19px", fontWeight: 900 }}>XTREME ICONS AGENCY</div>
-          <div style={{ fontSize: "9px", marginTop: "2px" }}>Professional Printing & Creative Services</div>
+          <div style={{ fontSize: "9px", marginTop: "2px" }}>{t.professionalServices}</div>
         </div>
         <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: "16px", fontWeight: 900 }}>COTIZACIÓN</div>
+          <div style={{ fontSize: "16px", fontWeight: 900 }}>{t.quote.toUpperCase()}</div>
           <div><strong>{numeroCotizacion}</strong></div>
-          <div>{new Date().toLocaleDateString("en-US")}</div>
+          <div>{new Date().toLocaleDateString(language === "es" ? "es-US" : "en-US")}</div>
         </div>
       </div>
 
       <div className="print-section" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "8px" }}>
         <div style={{ border: "1px solid #bbb", padding: "7px" }}>
-          <strong>CLIENTE</strong>
+          <strong>{t.client}</strong>
           <div style={{ marginTop: "4px" }}>{nombreCliente || "—"}</div>
           <div>{empresa || ""}</div>
           <div>{telefono || ""}{telefono && correo ? " · " : ""}{correo || ""}</div>
         </div>
         <div style={{ border: "1px solid #bbb", padding: "7px" }}>
-          <strong>RESUMEN DEL TRABAJO</strong>
-          <div style={{ marginTop: "4px" }}>{categoria ? categoryLabels[categoria] : "—"} · {material || "—"}</div>
-          <div>{num(ancho)} × {num(alto)} {unidad} · Cantidad: {num(cantidad)}</div>
-          <div>Área total: {areaTotal.toFixed(2)} ft²</div>
+          <strong>{t.jobSummary}</strong>
+          <div style={{ marginTop: "4px" }}>{categoria ? categoryLabels[language][categoria] : "—"} · {material || "—"}</div>
+          <div>{num(ancho)} × {num(alto)} {unidad} · {t.quantity}: {num(cantidad)}</div>
+          <div>{t.totalArea}: {areaTotal.toFixed(2)} ft²</div>
         </div>
       </div>
 
       <table className="print-table print-section" style={{ marginBottom: "8px" }}>
-        <thead><tr><th>Concepto</th><th>Detalle</th><th style={{ textAlign: "right" }}>Importe</th></tr></thead>
+        <thead><tr><th>{t.concept}</th><th>{t.detail}</th><th style={{ textAlign: "right" }}>{t.amount}</th></tr></thead>
         <tbody>
-          <tr><td>Producto</td><td>{categoria ? categoryLabels[categoria] : "—"}, {material || "—"}, {num(ancho)} × {num(alto)} {unidad}, {num(cantidad)} unidad(es)</td><td style={{ textAlign: "right" }}>{money(precioProducto)}</td></tr>
-          {usarLaminado && <tr><td>Laminado</td><td>{areaTotal.toFixed(2)} ft² × {money(num(laminadoPie))}</td><td style={{ textAlign: "right" }}>{money(costoLaminado)}</td></tr>}
-          {usarOjillos && <tr><td>Ojillos</td><td>{num(cantidadOjillos)} × {money(num(precioOjillo))}</td><td style={{ textAlign: "right" }}>{money(costoOjillos)}</td></tr>}
-          {usarDobladillo && <tr><td>Dobladillo</td><td>{num(piesDobladillo)} pies lineales</td><td style={{ textAlign: "right" }}>{money(costoDobladillo)}</td></tr>}
-          {usarBolsas && <tr><td>Bolsas para tubo</td><td>{num(piesBolsas)} pies lineales</td><td style={{ textAlign: "right" }}>{money(costoBolsas)}</td></tr>}
-          {usarDiseno && <tr><td>Diseño gráfico</td><td>Cargo de diseño</td><td style={{ textAlign: "right" }}>{money(costoDiseno)}</td></tr>}
-          {usarInstalacion && <tr><td>Instalación</td><td>Cargo de instalación</td><td style={{ textAlign: "right" }}>{money(costoInstalacion)}</td></tr>}
-          {usarEnvio && <tr><td>Envío</td><td>Cargo de envío</td><td style={{ textAlign: "right" }}>{money(costoEnvio)}</td></tr>}
+          <tr><td>{t.product}</td><td>{categoria ? categoryLabels[language][categoria] : "—"}, {material || "—"}, {num(ancho)} × {num(alto)} {unidad}, {num(cantidad)} {t.units}</td><td style={{ textAlign: "right" }}>{money(precioProducto)}</td></tr>
+          {usarLaminado && <tr><td>{t.laminate}</td><td>{areaTotal.toFixed(2)} ft² × {money(num(laminadoPie))}</td><td style={{ textAlign: "right" }}>{money(costoLaminado)}</td></tr>}
+          {usarOjillos && <tr><td>{t.grommets}</td><td>{num(cantidadOjillos)} × {money(num(precioOjillo))}</td><td style={{ textAlign: "right" }}>{money(costoOjillos)}</td></tr>}
+          {usarDobladillo && <tr><td>{t.hem}</td><td>{num(piesDobladillo)} {t.linearFeet.toLowerCase()}</td><td style={{ textAlign: "right" }}>{money(costoDobladillo)}</td></tr>}
+          {usarBolsas && <tr><td>{t.polePockets}</td><td>{num(piesBolsas)} {t.linearFeet.toLowerCase()}</td><td style={{ textAlign: "right" }}>{money(costoBolsas)}</td></tr>}
+          {usarDiseno && <tr><td>{t.graphicDesign}</td><td>{t.designCharge}</td><td style={{ textAlign: "right" }}>{money(costoDiseno)}</td></tr>}
+          {usarInstalacion && <tr><td>{t.installation}</td><td>{t.installationCharge}</td><td style={{ textAlign: "right" }}>{money(costoInstalacion)}</td></tr>}
+          {usarEnvio && <tr><td>{t.shipping}</td><td>{t.shippingCharge}</td><td style={{ textAlign: "right" }}>{money(costoEnvio)}</td></tr>}
         </tbody>
       </table>
 
-      {notas && <div className="print-section" style={{ border: "1px solid #bbb", padding: "7px", marginBottom: "8px" }}><strong>NOTAS</strong><div style={{ marginTop: "3px", whiteSpace: "pre-wrap" }}>{notas}</div></div>}
+      {notas && <div className="print-section" style={{ border: "1px solid #bbb", padding: "7px", marginBottom: "8px" }}><strong>{t.printNotes}</strong><div style={{ marginTop: "3px", whiteSpace: "pre-wrap" }}>{notas}</div></div>}
 
       <div className="print-section" style={{ marginLeft: "auto", width: "48%", border: "1px solid #999", padding: "7px" }}>
-        <PrintRow label="Subtotal" value={money(subtotal)} />
-        <PrintRow label={`Impuesto (${num(impuesto).toFixed(2)}%)`} value={money(impuestos)} />
-        <div style={{ display: "flex", justifyContent: "space-between", borderTop: "2px solid #111", marginTop: "5px", paddingTop: "5px", fontSize: "16px", fontWeight: 900 }}><span>TOTAL</span><span>{money(total)}</span></div>
+        <PrintRow label={t.subtotal} value={money(subtotal)} />
+        <PrintRow label={`${t.tax.replace(" (%)", "")} (${num(impuesto).toFixed(2)}%)`} value={money(impuestos)} />
+        <div style={{ display: "flex", justifyContent: "space-between", borderTop: "2px solid #111", marginTop: "5px", paddingTop: "5px", fontSize: "16px", fontWeight: 900 }}><span>{t.total}</span><span>{money(total)}</span></div>
       </div>
 
       <div className="print-section" style={{ marginTop: "10px", borderTop: "1px solid #aaa", paddingTop: "6px", fontSize: "8.5px", color: "#333" }}>
-        Esta cotización está sujeta a confirmación de medidas, materiales y disponibilidad. Gracias por elegir Xtreme Icons Agency.
+        {t.disclaimer}
       </div>
     </section>
     </>
