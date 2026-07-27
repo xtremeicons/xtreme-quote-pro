@@ -43,7 +43,7 @@ const translations = {
 const moduleSettings = [
   { href: "/nueva-cotizacion", icon: "➕", available: true },
   { href: "#", icon: "📄", available: false },
-  { href: "#", icon: "👥", available: false },
+  { href: "/clientes", icon: "👥", available: true },
   { href: "#", icon: "📦", available: false },
   { href: "#", icon: "📊", available: false },
   { href: "#", icon: "⚙️", available: false },
@@ -97,11 +97,11 @@ export default function HomePage() {
 
         <section style={styles.summary}>
           <div style={styles.summaryCard}>
-            <span style={styles.summaryNumber}>1</span>
+            <span style={styles.summaryNumber}>2</span>
             <span style={styles.summaryText}>{t.available}</span>
           </div>
           <div style={styles.summaryCard}>
-            <span style={styles.summaryNumber}>5</span>
+            <span style={styles.summaryNumber}>4</span>
             <span style={styles.summaryText}>{t.developing}</span>
           </div>
         </section>
